@@ -16,10 +16,11 @@ ld = {L[0]: L[1] for L in locations}
 
 def mkmenu():
     template = "<select name='loc'>\n"
-    item = " <option value='{0}'>{1}</option>\n"
+    item = ' <option value="{0}">{1}</option>\n'
     for L in locations:
         template += item.format(L[0], L[1])
     template += "\n</select>"
+    template = template.replace(f'"{s.room}"', f'"{s.room}" selected')
     return template
 
 @create.route('/create/')
