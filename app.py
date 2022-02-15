@@ -1,5 +1,6 @@
 from flask import Flask, request
 from index import index
+from create import create
 import settings as s
 
 _port = s._port
@@ -12,6 +13,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 # register blueprints 
 app.register_blueprint(index)
+app.register_blueprint(create)
 
 # start the application 
 if __name__ == "__main__":

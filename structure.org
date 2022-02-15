@@ -6,4 +6,36 @@ create.py
 event.py
 board.py
 
+* /
+* /create/
+** Panel One:
+*** title (string, 30)
+*** date + time (int, 10)
+*** location (menu)
+** Panel Two: /create/next
+*** description (string, 1500)
+*** host, contact (string, 15, 30)
+** Panel Three:  /create/confirm
+   preview, captcha
+* /event/<yyyymmddhh.nn>
+  yyyymmddhh.nn
+** file:
+0  title
+1  host, guest1, guest2
+2  location
+3  description
+4  name<comment
+
+* /list/
+  future
+  all
+  past
+* /table/<yyyy>/<mm>/
+  year / month
+  calendar table
+  event list
+  add new
+* /feeds/<m
+* /admin/
+
 * import flask
