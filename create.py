@@ -1,11 +1,14 @@
+import os
 from flask import Blueprint
 from flask import request
+from flask import escape
 import settings as s
 
 import datetime
 create = Blueprint("create", __name__)
 
 dt = datetime.datetime.today()
+
 # locations.txt -> locations [[code, name]]
 with open("locations.txt", "r") as locations:
     locations = locations.read().splitlines()
@@ -14,7 +17,7 @@ for n, L in enumerate(locations):
     locations[n] = [L[0], " ".join(L[1:])]
 ld = {L[0]: L[1] for L in locations}
 
-def mkmenu():
+def locmenu():
     template = "<select name='loc'>\n"
     item = ' <option value="{0}">{1}</option>\n'
     for L in locations:
@@ -36,12 +39,13 @@ def page1():
         forms[x] = forms[x].replace(today[x], today[x] + " selected")
     with open("html/create1.html", "r") as create1:
         create1 = create1.read()
-    create1 = create1.format(forms["month"], forms["day"], mkmenu())
+    create1 = create1.format(forms["month"], forms["day"], locmenu())
     return create1
 
 @create.route('/create/next', methods=['POST'])
 def page2():
     event_d = [request.form[n] for n in ["year", "month", "day", "hour"]]
+    fields = ["title", "host", "loc", "desc", "year", "month", "day", "hour"]
     loc = request.form["loc"]
     print(request.form["title"])
     print("{0}-{1}-{2} @ {3}".format(*event_d))
@@ -59,13 +63,45 @@ def page2():
 @create.route('/create/finish', methods=['POST'])
 def page3():
     desc = request.form["desc"].replace("\n", "<br>")
+    fields = ["title", "host", "loc", "desc", "year", "month", "day", "hour"]
+    print(request.form)
+    event = {i: escape(request.form[i]) for i in fields}
+    if not event["host"]:
+        event["host"] = "Anonymous"
+    event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
+    for i in fields:
+        print(event[i])
+    print(event["ymd"])
+    event["fn"] = mkfilename(event["ymd"]) + ".txt"
+
+    writedb(event, 0)
     return f"""event preview:<br>
-Title: {request.form["title"]}<br>
-Host: {request.form["host"]}<br>
-Location: {request.form["loc"]}<br>
+Title: {event["title"]}<br>
+Date: {event["month"]}-{event["day"]}, {event["hour"]}:00<br>
+Host: {event["host"]}<br>
+Location: <a href="{s._url}{event["loc"]}">{ld[event["loc"]]}</a> ({event["loc"]})<br>
 Description: {desc}<br>
+Filename: {event["fn"]}<br>
+Row: {event["fn"]}>1>{event["title"]}</pre>
 """
 
+def mkfilename(ymd):
+    print(ymd)
+    files = os.listdir("data")
+    cnt = len([i for i in files if ymd in i])
+    return ".".join([ymd, str(cnt).zfill(2)])
+
+def writedb(event, debug=0):
+    entry = ">".join([event["fn"], "1", event["title"]])
+    if debug == 1:
+        return
+    with open("data/" + event["fn"], "w") as eventfile:
+        eventfile.write("\n".join([event["title"], event["host"],
+                                   event["loc"], event["desc"], ""]))
+    with open("data/list.txt", "a") as index:
+        index.write(entry + "\n")
+    print("entry")
+    
 # row 1: title
 # row 2: host, guest1, guest2
 # row 3: giko location name
