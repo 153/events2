@@ -45,16 +45,17 @@ def page1():
 @create.route('/create/next', methods=['POST'])
 def page2():
     event_d = [request.form[n] for n in ["year", "month", "day", "hour"]]
-    fields = ["title", "host", "loc", "desc", "year", "month", "day", "hour"]
+    fields = ["title", "loc", "year", "month", "day", "hour", "tz"]
     loc = request.form["loc"]
-    print(request.form["title"])
-    print("{0}-{1}-{2} @ {3}".format(*event_d))
-    print(s._url + request.form["loc"], "/////", ld[request.form["loc"]])
     with open("html/create2.html", "r") as page:
         page = page.read()
     message = eval(page)
-
-    for i in request.form:
+    print(fields)
+    for i in fields:
+        print(i)
+        print(request.form[i])
+    print([request.form[i] for i in fields])
+    for i in fields:
         message += f"<input type='hidden' name='{i}' value='{request.form[i]}'>"
         print(i, request.form[i])
     message += "</form>"
@@ -63,7 +64,7 @@ def page2():
 @create.route('/create/finish', methods=['POST'])
 def page3():
     desc = request.form["desc"].replace("\n", "<br>")
-    fields = ["title", "host", "loc", "desc", "year", "month", "day", "hour"]
+    fields = ["title", "host", "loc", "desc", "year", "month", "day", "hour", "tz"]
     print(request.form)
     event = {i: escape(request.form[i]) for i in fields}
     if not event["host"]:
@@ -77,7 +78,7 @@ def page3():
     writedb(event, 1)
     return f"""event preview:<br>
 Title: {event["title"]}<br>
-Date: {event["month"]}-{event["day"]}, {event["hour"]}:00<br>
+Date: {event["month"]}-{event["day"]}, {event["hour"]}:00 {event["tz"]}<br>
 Host: {event["host"]}<br>
 Location: <a href="{s._url}{event["loc"]}">{ld[event["loc"]]}</a> ({event["loc"]})<br>
 Description: {desc}<br>
@@ -96,7 +97,7 @@ def writedb(event, debug=0):
     if debug == 1:
         return
     with open("data/" + event["fn"], "w") as eventfile:
-        eventfile.write("\n".join([event["title"], event["host"],
+        eventfile.write("\n".join([event["title"], event["host"], event["tz"],
                                    event["loc"], event["desc"], ""]))
     with open("data/list.txt", "a") as index:
         index.write(entry + "\n")
