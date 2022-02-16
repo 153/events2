@@ -15,6 +15,15 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.register_blueprint(index)
 app.register_blueprint(create)
 
+@app.route("/")
+def hello():
+    ret = ["<h1>Gikopoi events! in dev!!</h1>"]
+    ret.append("source: <a href='//github.com/153/events2'>github/153/events2</a>")
+    ret.append("<ul><li>")
+    ret.append("<li>".join(["<a href='create'>create</a>",
+                       "<a href='list'>list</a>"]))
+    return "".join(ret)
+
 # start the application 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=_port)
