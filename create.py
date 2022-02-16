@@ -37,10 +37,7 @@ def page1():
     with open("html/create1.html", "r") as create1:
         create1 = create1.read()
     create1 = create1.format(forms["month"], forms["day"], mkmenu())
-    
     return create1
-
-page1()
 
 @create.route('/create/next', methods=['POST'])
 def page2():
@@ -52,17 +49,7 @@ def page2():
     with open("html/create2.html", "r") as page:
         page = page.read()
     message = eval(page)
-    message2 = f"""
-<form action='/create/finish' method='post'>
-<table>
-<tr><td>title: <td>{request.form["title"]}
-<tr><td>date: <td>{event_d[0]}-{event_d[1]}-{event_d[2]} @ {event_d[3]}:00
-<tr><td>stage: <td><a href="{s._url}{loc}">{ld[loc]}</a>
-<tr><td>Info: <td><textarea name="desc" rows=3 cols=60></textarea>
-<tr><td>Host: <td><input name="host">
-<tr><td colspan="2"><center><input type="submit" value="Next -&gt;"></center>
-</table>
-"""
+
     for i in request.form:
         message += f"<input type='hidden' name='{i}' value='{request.form[i]}'>"
         print(i, request.form[i])
@@ -71,7 +58,6 @@ def page2():
 
 @create.route('/create/finish', methods=['POST'])
 def page3():
-    print("lol")
     desc = request.form["desc"].replace("\n", "<br>")
     return f"""event preview:<br>
 Title: {request.form["title"]}<br>
@@ -79,7 +65,6 @@ Host: {request.form["host"]}<br>
 Location: {request.form["loc"]}<br>
 Description: {desc}<br>
 """
-
 
 # row 1: title
 # row 2: host, guest1, guest2
