@@ -1,0 +1,11 @@
+sanitize input
+templates/css
+event view
+calendar view
+captcha
+rsvp
+comments
+tripcodes
+atom feeds
+icalendar?
+bots? (irc)
