@@ -74,7 +74,7 @@ def page3():
     print(event["ymd"])
     event["fn"] = mkfilename(event["ymd"]) + ".txt"
 
-    writedb(event, 0)
+    writedb(event, 1)
     return f"""event preview:<br>
 Title: {event["title"]}<br>
 Date: {event["month"]}-{event["day"]}, {event["hour"]}:00<br>
