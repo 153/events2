@@ -49,7 +49,10 @@ def page2():
     print(request.form["title"])
     print("{0}-{1}-{2} @ {3}".format(*event_d))
     print(s._url + request.form["loc"], "/////", ld[request.form["loc"]])
-    message = f"""
+    with open("html/create2.html", "r") as page:
+        page = page.read()
+    message = eval(page)
+    message2 = f"""
 <form action='/create/finish' method='post'>
 <table>
 <tr><td>title: <td>{request.form["title"]}
@@ -69,11 +72,12 @@ def page2():
 @create.route('/create/finish', methods=['POST'])
 def page3():
     print("lol")
+    desc = request.form["desc"].replace("\n", "<br>")
     return f"""event preview:<br>
 Title: {request.form["title"]}<br>
 Host: {request.form["host"]}<br>
 Location: {request.form["loc"]}<br>
-Description: {request.form["desc"]}<br>
+Description: {desc}<br>
 """
 
 
