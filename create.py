@@ -45,10 +45,36 @@ page1()
 @create.route('/create/next', methods=['POST'])
 def page2():
     event_d = [request.form[n] for n in ["year", "month", "day", "hour"]]
+    loc = request.form["loc"]
     print(request.form["title"])
     print("{0}-{1}-{2} @ {3}".format(*event_d))
     print(s._url + request.form["loc"], "/////", ld[request.form["loc"]])
-    return request.form
+    message = f"""
+<form action='/create/finish' method='post'>
+<table>
+<tr><td>title: <td>{request.form["title"]}
+<tr><td>date: <td>{event_d[0]}-{event_d[1]}-{event_d[2]} @ {event_d[3]}:00
+<tr><td>stage: <td><a href="{s._url}{loc}">{ld[loc]}</a>
+<tr><td>Info: <td><textarea name="desc" rows=3 cols=60></textarea>
+<tr><td>Host: <td><input name="host">
+<tr><td colspan="2"><center><input type="submit" value="Next -&gt;"></center>
+</table>
+"""
+    for i in request.form:
+        message += f"<input type='hidden' name='{i}' value='{request.form[i]}'>"
+        print(i, request.form[i])
+    message += "</form>"
+    return message
+
+@create.route('/create/finish', methods=['POST'])
+def page3():
+    print("lol")
+    return f"""event preview:<br>
+Title: {request.form["title"]}<br>
+Host: {request.form["host"]}<br>
+Location: {request.form["loc"]}<br>
+Description: {request.form["desc"]}<br>
+"""
 
 
 # row 1: title
