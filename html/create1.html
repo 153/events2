@@ -1,8 +1,8 @@
 <form action="/create/next" method="POST">
 <table>
-  <tr><td>Title:
+  <tr><th>Title:
       <td><input type="text" name="title" style="width:15em" required>
-  <tr><td>Date:
+  <tr><th>Date:
       <td><select name="year">
           <option value="2022">2022</option>
 	  <option value="2023">2023</option>
@@ -36,15 +36,17 @@
     <option value="22">10pm</option>
     <option value="23">11pm</option>
   </select>
-  <tr><td>Timezone:<td>
-      <input type="radio" name="tz" id="ny" value="ny" checked>
-      <label for="ny">New York (-0500)</label>
-      <input type="radio" name="tz" id="ce" value="ce">
-      <label for="ce">Central Europe (+0100)</label>
-      <input type="radio" name="tz" id="jp" value="jp">
-      <label for="ny">Japan (+1800)</label>
+  &emsp; <input type="checkbox" name="24h"> All day?
+  <tr><th>Timezone:<td>
+  <select name="tz">
+    <option value="-0500">-0500 / New York</option>
+    <option value="+0100">+0100 / Central Europe</option>
+    <option value="+0900">+0900 / Japan </option>
+  </select>
+  <abbr title="Daylight Savings Time"> DST</abbr>?
+  <input type="checkbox" name="dst" value="1">
 
-  <tr><td>Location: <td>{2}
+  <tr><th>Location: <td>{2}
       <tr><td colspan="2"><input type="submit" value="Next -&gt;">
 </table>	    
 </form>

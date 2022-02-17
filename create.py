@@ -58,13 +58,18 @@ def page2():
     for i in fields:
         message += f"<input type='hidden' name='{i}' value='{request.form[i]}'>"
         print(i, request.form[i])
+    if "dst" in request.form:
+        message += "<input type='hidden' name='dst' value='1'>"
+    else:
+        message += "<input type='hidden' name='dst' value='0'>"
     message += "</form>"
     return message
 
 @create.route('/create/finish', methods=['POST'])
 def page3():
     desc = request.form["desc"].replace("\n", "<br>")
-    fields = ["title", "host", "loc", "desc", "year", "month", "day", "hour", "tz"]
+    fields = ["title", "host", "loc", "desc",
+              "year", "month", "day", "hour", "tz", "dst"]
     print(request.form)
     event = {i: escape(request.form[i]) for i in fields}
     if not event["host"]:
@@ -78,7 +83,7 @@ def page3():
     writedb(event, 1)
     return f"""event preview:<br>
 Title: {event["title"]}<br>
-Date: {event["month"]}-{event["day"]}, {event["hour"]}:00 {event["tz"]}<br>
+Date: {event["month"]}-{event["day"]}, {event["hour"]}:00 {event["tz"]} ({event["dst"]})<br>
 Host: {event["host"]}<br>
 Location: <a href="{s._url}{event["loc"]}">{ld[event["loc"]]}</a> ({event["loc"]})<br>
 Description: {desc}<br>
