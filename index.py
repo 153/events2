@@ -5,8 +5,11 @@ from flask import Blueprint
 from flask import request
 
 import settings as s
+import utils as u
 index = Blueprint("index", __name__)
 
+year = date.today().year
+    
 @index.route('/list/')
 def event_index():
     with open("data/list.txt", "r") as entries:
@@ -21,14 +24,13 @@ def event_index():
     for e in entries:
         etable.append("".join(["<tr><td>", "<td>".join([e[3], e[2], e[1]])]))
     etable.append("</table>")
-    return "".join(etable)
+    return u.html("".join(etable), "event list")
 
 def cal(mont=2):
     names = ["", "January", "February", "March", "April", "May", "June",
              "July", "August", "September", "October", "November",
              "December"]
     monts = str(mont).zfill(2) # get month as 0 padded string
-    year = date.today().year
     last = calendar.monthrange(year, mont)[1]
     d1 = date(year, mont, 1)
     d2 = date(year, mont, last)
@@ -41,8 +43,11 @@ def cal(mont=2):
         weeks += 1
     pos = [0,0]
     cnt = 0
-    prev = mont - 1
-    nex = (mont + 1) % 12
+    prev, nex = 1, 12
+    if mont > 1:
+        prev = mont - 1
+    if mont < 12:
+        nex = (mont + 1) % 13
     
     mon = ["<table>"]
     mon.append(f"<tr><td><a href='/calendar/{prev}'>&#171; {prev}</a>")
@@ -84,7 +89,7 @@ def currmonth():
 @index.route('/calendar/<month>/')
 def monthview(month):
     table = cal(int(month))
-    return table
+    return u.html(table, f"calendar: {year}/{month}")
 
 if __name__ == "__main__":
     for i in range(12):

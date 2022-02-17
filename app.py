@@ -2,6 +2,7 @@ from flask import Flask, request
 from index import index
 from create import create
 import settings as s
+import utils as u
 
 _port = s._port
 
@@ -17,14 +18,14 @@ app.register_blueprint(create)
 
 @app.route("/")
 def hello():
-    ret = ["<h1>Gikopoi events! in dev!!</h1>"]
+    ret = []
     ret.append("source: <a href='//github.com/153/events2'>github/153/events2</a>")
     ret.append("<ul><li>")
     ret.append("<li>".join(["<a href='create'>create</a>",
                             "<a href='list'>list</a>",
                             "<a href='calendar'>calendar</a>"]))
     ret.append("</ul>")
-    return "".join(ret)
+    return u.html("".join(ret), "gikopoi events")
 
 # start the application 
 if __name__ == "__main__":

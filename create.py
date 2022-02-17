@@ -3,6 +3,7 @@ from flask import Blueprint
 from flask import request
 from flask import escape
 import settings as s
+import utils as u
 
 import datetime
 create = Blueprint("create", __name__)
@@ -40,7 +41,7 @@ def page1():
     with open("html/create1.html", "r") as create1:
         create1 = create1.read()
     create1 = create1.format(forms["month"], forms["day"], locmenu())
-    return create1
+    return u.html(create1, "create")
 
 @create.route('/create/next', methods=['POST'])
 def page2():
@@ -63,7 +64,7 @@ def page2():
     else:
         message += "<input type='hidden' name='dst' value='0'>"
     message += "</form>"
-    return message
+    return u.html(message, "create")
 
 @create.route('/create/preview', methods=['POST'])
 def page3():
@@ -81,7 +82,7 @@ def page3():
     page = eval(page)
     for i in event:
         page += f"<input type='hidden' name='{i}' value='{event[i]}'>"
-    return page
+    return u.html(page, "create")
 #    writedb(event, 0)
 
     return f"""event preview:<br>
