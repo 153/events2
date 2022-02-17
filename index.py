@@ -9,6 +9,24 @@ import utils as u
 index = Blueprint("index", __name__)
 
 year = date.today().year
+
+with open("data/list.txt", "r") as events:
+    events = events.read().splitlines()
+for n, e in enumerate(events):
+    e = e.split(">")
+    # yyyymmddhh.nn.txt guests host
+    # [yyyy, mm, dd, filename, host, guests]
+    events[n] = [e[0][:4], e[0][4:6], e[0][6:8], e[0], e[2], e[1]]
+print(events)
+
+def month_events(month):
+    eventlist = [e for e in events if int(e[1]) == int(month)]
+    table = ["<table><tr><th>date<th>title"]
+    for e in eventlist:
+        table.append(f"<tr><td>{e[1]}-{e[2]}<td><a href='/{e[3]}'>{e[4]}</a>")
+    table.append("</table>")
+    return "\n".join(table)
+            
     
 @index.route('/list/')
 def event_index():
@@ -79,6 +97,8 @@ def cal(mont=2):
     else:
         mon.append("<td>" + str(cnt+1))
     mon.append("</table>")
+    month_events(mont)
+    # monts = 
     return "".join(mon)
 
 @index.route('/calendar')
@@ -89,6 +109,15 @@ def currmonth():
 @index.route('/calendar/<month>/')
 def monthview(month):
     table = cal(int(month))
+    eventlist = [e[2] for e in events if int(e[1]) == int(month)]
+    for e in eventlist:
+        table = table.replace(f"<td>{e}",
+                              f"<td style='background-color:cyan'>{e}")
+    print(eventlist)    
+    
+    elist = month_events(month)
+    if "-" in elist:
+       table += "<p>" + elist
     return u.html(table, f"calendar: {year}/{month}")
 
 if __name__ == "__main__":
