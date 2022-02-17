@@ -41,7 +41,7 @@ def page1():
     with open("html/create1.html", "r") as create1:
         create1 = create1.read()
     create1 = create1.format(forms["month"], forms["day"], locmenu())
-    return u.html(create1, "create")
+    return u.html(create1, "create (1/3)")
 
 @create.route('/create/next', methods=['POST'])
 def page2():
@@ -64,7 +64,7 @@ def page2():
     else:
         message += "<input type='hidden' name='dst' value='0'>"
     message += "</form>"
-    return u.html(message, "create")
+    return u.html(message, "create (2/3)")
 
 @create.route('/create/preview', methods=['POST'])
 def page3():
@@ -82,18 +82,7 @@ def page3():
     page = eval(page)
     for i in event:
         page += f"<input type='hidden' name='{i}' value='{event[i]}'>"
-    return u.html(page, "create")
-#    writedb(event, 0)
-
-    return f"""event preview:<br>
-Title: {event["title"]}<br>
-Date: 
-Host: {event["host"]}<br>
-Location: 
-Description: {desc}<br>
-Filename: {event["fn"]}<br>
-Row: {event["fn"]}>1>{event["title"]}</pre>
-"""
+    return u.html(page, "create (3/3)")
 
 @create.route('/create/finish', methods=['POST'])
 def page4():

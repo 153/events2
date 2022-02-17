@@ -101,7 +101,7 @@ def cal(mont=2):
     # monts = 
     return "".join(mon)
 
-@index.route('/calendar')
+@index.route('/calendar/')
 def currmonth():
     month = date.today().month
     return monthview(month)
