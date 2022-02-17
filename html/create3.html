@@ -1,0 +1,11 @@
+f"""<form action='/create/finish' method='post'>
+<table>
+  <tr><th>Title: <td>{event["title"]}
+  <tr><th>Date: <td>{event["month"]}-{event["day"]}, {event["hour"]}:00
+  		    {event["tz"]} ({event["dst"]})
+  <tr><th>Host: <td>{event["host"]}
+  <tr><th>Location: <td><a href="{s._url}{event["loc"]}">{ld[event["loc"]]}</a> ({event["loc"]})
+  <tr><th>Description: <td>{event["desc"]}
+  <tr><th colspan="2"><input type="submit" value="Publish">
+</table>  
+"""

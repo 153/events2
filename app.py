@@ -21,7 +21,8 @@ def hello():
     ret.append("source: <a href='//github.com/153/events2'>github/153/events2</a>")
     ret.append("<ul><li>")
     ret.append("<li>".join(["<a href='create'>create</a>",
-                       "<a href='list'>list</a>"]))
+                            "<a href='list'>list</a>",
+                            "<a href='calendar'>calendar</a>"]))
     return "".join(ret)
 
 # start the application 
@@ -29,4 +30,4 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=_port)
     print(request)
 
-app.run()    
+app.run(debug=True)    

@@ -20,14 +20,15 @@ def event_index():
     etable = ["<table><tr><th>date<th>title<th>guests"]
     for e in entries:
         etable.append("".join(["<tr><td>", "<td>".join([e[3], e[2], e[1]])]))
-    etable.append("</table><pre>" + str("="*26) + cal() + "</pre>")
+    etable.append("</table>")
     return "".join(etable)
 
-
-@index.route('/calendar')
 def cal(mont=2):
-    monts = str(mont).zfill(2)
-    year = 2022
+    names = ["", "January", "February", "March", "April", "May", "June",
+             "July", "August", "September", "October", "November",
+             "December"]
+    monts = str(mont).zfill(2) # get month as 0 padded string
+    year = date.today().year
     last = calendar.monthrange(year, mont)[1]
     d1 = date(year, mont, 1)
     d2 = date(year, mont, last)
@@ -38,35 +39,52 @@ def cal(mont=2):
     extra = 6 - end
     if (end == 0) or (start == 6):
         weeks += 1
-    mon = []
     pos = [0,0]
     cnt = 0
+    prev = mont - 1
+    nex = (mont + 1) % 12
+    
+    mon = ["<table>"]
+    mon.append(f"<tr><td><a href='/calendar/{prev}'>{prev}</a>")
+    mon.append(f"<th colspan='5'>{names[mont]} {year}</td>")
+    mon.append(f"<td><a href='/calendar/{nex}'>{nex}</a>")    
+    mon.append("<tr><th>Mon<th>Tue<th>Wed<th>Thu<th>Fri<th>Sat<th>Sun")
+    
     while pos != [weeks, 6]:
         if pos[1] == 0:
-            mon.append(f"\n {pos[0]+1} -|")
+            mon.append("\n<tr>")
         if pos[0] == 0:
             if pos[1] < start:
-                mon.append(" .")
+                mon.append("<td> .")
             else:
                 cnt += 1
-                mon.append(str(cnt).zfill(2))
+                mon.append("<td>" + str(cnt)\
+                           .zfill(2))
         elif pos[0] == weeks and pos[1] > end:
-            mon.append(" .")
+            mon.append("<td> .")
         else:
             cnt += 1
-            mon.append(str(cnt).zfill(2))
+            mon.append("<td>" + str(cnt)\
+                       .zfill(2))
         pos = [pos[0], pos[1]+1]
         if pos[1] == 7:
             pos = [pos[0]+1, 0]
     if extra != 0:
-        mon.append(" .")
+        mon.append("<td> .")
     else:
-        mon.append(str(cnt+1))
-    print("\n\nmonth: ", mont)
-    print("==========================")
-    print("W   |  M  T  W  R  F  S  S")
-    print(" ".join(mon))
-    return " ".join(mon)
+        mon.append("<td>" + str(cnt+1))
+    mon.append("</table>")
+    return "".join(mon)
+
+@index.route('/calendar')
+def currmonth():
+    month = date.today().month
+    return monthview(month)
+
+@index.route('/calendar/<month>/')
+def monthview(month):
+    table = cal(int(month))
+    return table
 
 if __name__ == "__main__":
     for i in range(12):
