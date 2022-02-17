@@ -23,6 +23,7 @@ def hello():
     ret.append("<li>".join(["<a href='create'>create</a>",
                             "<a href='list'>list</a>",
                             "<a href='calendar'>calendar</a>"]))
+    ret.append("</ul>")
     return "".join(ret)
 
 # start the application 

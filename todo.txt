@@ -1,11 +1,15 @@
 sanitize input
 templates/css
+
 event view
-calendar view
+calendar view (wip)
+
 captcha
 rsvp
 comments
 tripcodes
+
+timezones
 atom feeds
 icalendar?
 bots? (irc)

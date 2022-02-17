@@ -45,9 +45,9 @@ def cal(mont=2):
     nex = (mont + 1) % 12
     
     mon = ["<table>"]
-    mon.append(f"<tr><td><a href='/calendar/{prev}'>{prev}</a>")
+    mon.append(f"<tr><td><a href='/calendar/{prev}'>&#171; {prev}</a>")
     mon.append(f"<th colspan='5'>{names[mont]} {year}</td>")
-    mon.append(f"<td><a href='/calendar/{nex}'>{nex}</a>")    
+    mon.append(f"<td><a href='/calendar/{nex}'>{nex} &#187;</a>")    
     mon.append("<tr><th>Mon<th>Tue<th>Wed<th>Thu<th>Fri<th>Sat<th>Sun")
     
     while pos != [weeks, 6]:
