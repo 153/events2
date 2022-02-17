@@ -1,6 +1,7 @@
 import calendar
-import pandas as pd
+import os
 from datetime import date, datetime, timedelta
+import pandas as pd
 from flask import Blueprint
 from flask import request
 
@@ -23,7 +24,7 @@ def month_events(month):
     eventlist = [e for e in events if int(e[1]) == int(month)]
     table = ["<table><tr><th>date<th>title"]
     for e in eventlist:
-        table.append(f"<tr><td>{e[1]}-{e[2]}<td><a href='/{e[3]}'>{e[4]}</a>")
+        table.append(f"<tr><td>{e[1]}-{e[2]}<td><a href='/e/{e[3]}'>{e[4]}</a>")
     table.append("</table>")
     return "\n".join(table)
             
@@ -38,6 +39,7 @@ def event_index():
     for n, e in enumerate(entries):
         when = f"{e[0][4:6]}-{e[0][6:8]}"
         entries[n].append(when)
+        e[2] = f"<a href='/e/{e[0]}'>{e[2]}</a>"
     etable = ["<table><tr><th>date<th>title<th>guests"]
     for e in entries:
         etable.append("".join(["<tr><td>", "<td>".join([e[3], e[2], e[1]])]))
@@ -112,13 +114,37 @@ def monthview(month):
     eventlist = [e[2] for e in events if int(e[1]) == int(month)]
     for e in eventlist:
         table = table.replace(f"<td>{e}",
-                              f"<td style='background-color:cyan'>{e}")
-    print(eventlist)    
+                              f"<td class='event'>{e}")
+    print(eventlist)
+    table = table.replace("<td> .", "<td class='null'>")
     
     elist = month_events(month)
     if "-" in elist:
        table += "<p>" + elist
     return u.html(table, f"calendar: {year}/{month}")
+
+@index.route("/e/<fn>")
+def view_event(fn):
+    files = os.listdir("data")
+    print(files)
+    files = [f for f in files if len(f.split(".")) == 3]
+    if fn not in files:
+        return(u.html("Sorry, event can't be found!", "404"))
+    with open(f"data/{fn}", "r") as event:
+        event = event.read().splitlines()
+        # title, host, timezone, location, description
+    ymd = "/".join([fn[:4], fn[4:6], fn[6:8]])
+    hour = fn[8:10]
+    places = u.locations()
+    if " " in event[2]:
+        event[2] = event[2].split(" ")[0]
+    event[2] = f"{ymd} @ {hour}:00 ({event[2]})"
+    event[3] = f"<a href='{s._url}{event[3]}'>{places[event[3]]}</a>"
+    with open("html/event.html", "r") as page:
+        page = page.read()
+    page = page.format(*event)
+
+    return u.html(page, "Event")
 
 if __name__ == "__main__":
     for i in range(12):

@@ -2,3 +2,6 @@ body {background-color: #523}
 table {border-collapse: collapse; border:2px solid black}
 td {border:1px solid black; padding: 3px}
 th {border: 1px solid black; padding: 3px; background-color: #ddd}
+a {color: green}
+.null {background-color: #ccc}
+.event {background-color: cyan}
