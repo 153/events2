@@ -68,13 +68,11 @@ def page2():
 
 @create.route('/create/preview', methods=['POST'])
 def page3():
-    desc = request.form["desc"].replace("\n", "<br>")
     fields = ["title", "host", "loc", "desc",
               "year", "month", "day", "hour", "tz", "dst"]
-    event = {i: escape(request.form[i]) for i in fields}
+    event = {i: request.form[i] for i in fields}
     if not event["host"]:
         event["host"] = "Anonymous"    
-    event["desc"] = event["desc"].replace("\n", "<br>")
     event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
     event["fn"] = mkfilename(event["ymd"]) + ".txt"
     with open("html/create3.html", "r") as page:
@@ -89,10 +87,9 @@ def page4():
     fields = ["title", "host", "loc", "desc",
               "year", "month", "day", "hour", "tz", "dst"]
     event = {i: escape(request.form[i]) for i in fields}
-    event["desc"] = event["desc"].replace("\n", "<br>")
     event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
     event["fn"] = mkfilename(event["ymd"]) + ".txt"    
-    writedb(event, 0)
+    writedb(event, s.debug)
     return request.form
 
 def mkfilename(ymd):
@@ -105,6 +102,8 @@ def writedb(event, debug=0):
     entry = ">".join([event["fn"], "1", event["title"]])
     if debug == 1:
         return
+    event["desc"] = event["desc"].replace("\r\n", "<br>")\
+        
     with open("data/" + event["fn"], "w") as eventfile:
         eventfile.write("\n".join([event["title"], event["host"],
                                    event["tz"] + " " + event["dst"],

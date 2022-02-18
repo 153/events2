@@ -10,17 +10,17 @@ import utils as u
 index = Blueprint("index", __name__)
 
 year = date.today().year
-
-with open("data/list.txt", "r") as events:
-    events = events.read().splitlines()
-for n, e in enumerate(events):
-    e = e.split(">")
-    # yyyymmddhh.nn.txt guests host
-    # [yyyy, mm, dd, filename, host, guests]
-    events[n] = [e[0][:4], e[0][4:6], e[0][6:8], e[0], e[2], e[1]]
-print(events)
+def eventdb():
+    with open("data/list.txt", "r") as events:
+        events = events.read().splitlines()
+    events = sorted(events)
+    for n, e in enumerate(events):
+        e = e.split(">")
+        events[n] = [e[0][:4], e[0][4:6], e[0][6:8], e[0], e[2], e[1]]
+    return events
 
 def month_events(month):
+    events = eventdb()
     eventlist = [e for e in events if int(e[1]) == int(month)]
     table = ["<table><tr><th>date<th>title"]
     for e in eventlist:
@@ -111,6 +111,7 @@ def currmonth():
 @index.route('/calendar/<month>/')
 def monthview(month):
     table = cal(int(month))
+    events = eventdb()
     eventlist = [e[2] for e in events if int(e[1]) == int(month)]
     for e in eventlist:
         table = table.replace(f"<td>{e}",
@@ -142,13 +143,7 @@ def view_event(fn):
     event[3] = f"<a href='{s._url}{event[3]}'>{places[event[3]]}</a>"
     with open("html/event.html", "r") as page:
         page = page.read()
+    event[4] = event[4].replace("&lt;br&gt;", "<br>")
     page = page.format(*event)
-
-    return u.html(page, "Event")
-
-if __name__ == "__main__":
-    for i in range(12):
-        i += 1
-        cal(i)
     
-
+    return u.html(page, "Event")

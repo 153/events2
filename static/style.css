@@ -1,5 +1,7 @@
 body {background-color: #523}
-table {border-collapse: collapse; border:2px solid black}
+table {border-collapse: collapse; border:2px solid black;
+       margin-left: auto; margin-right: auto;
+       min-width: 12em;}
 td {border:1px solid black; padding: 3px}
 th {border: 1px solid black; padding: 3px; background-color: #ddd}
 a {color: green}
