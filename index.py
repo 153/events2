@@ -124,7 +124,7 @@ def monthview(month):
        table += "<p>" + elist
     return u.html(table, f"calendar: {year}/{month}")
 
-@index.route("/e/<fn>")
+@index.route("/f/<fn>")
 def view_event(fn):
     files = os.listdir("data")
     print(files)
