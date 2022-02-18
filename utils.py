@@ -1,4 +1,4 @@
-from flask import escape
+import flask
 
 with open("html/head.html", "r") as head:
     head = head.read()
@@ -16,7 +16,12 @@ def locations():
     return ld
 
 def escape(text, maxlen=0, newlines=0):
-    text = escape(text)
+    keys = {"<": "&lt;", ">": "&gt;",
+            "'": "&apos;", "\"": "&quot;"}
+    for key in keys:
+        if key in text:
+            text = text.replace(key, keys[key])
+#    text = flask.escape(text)
     if not newlines:
         text = text.replace("\r\n", "")
     else:
@@ -24,3 +29,8 @@ def escape(text, maxlen=0, newlines=0):
     if maxlen:
         text = text[:maxlen]
     return text
+
+if __name__ == "__main__":
+    tests = ["<test", "'test\r\n<"]
+    for t in tests:
+        print(escape(t, 20, 1))

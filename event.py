@@ -30,7 +30,5 @@ def view_event(fn):
     with open('html/commentform.html', "r") as cform:
         cform = cform.read()
     page += cform
-    
-    
-    
-    return u.html(page, "Event")
+        
+    return u.html(page, f"Event: {event[0]}")

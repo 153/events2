@@ -44,7 +44,7 @@ def event_index():
     for e in entries:
         etable.append("".join(["<tr><td>", "<td>".join([e[3], e[2], e[1]])]))
     etable.append("</table>")
-    return u.html("".join(etable), "event list")
+    return u.html("".join(etable), "Event list")
 
 def cal(mont=2):
     names = ["", "January", "February", "March", "April", "May", "June",
@@ -122,7 +122,7 @@ def monthview(month):
     elist = month_events(month)
     if "-" in elist:
        table += "<p>" + elist
-    return u.html(table, f"calendar: {year}/{month}")
+    return u.html(table, f"Calendar: {year}/{month}")
 
 @index.route("/f/<fn>")
 def view_event(fn):
@@ -146,4 +146,4 @@ def view_event(fn):
     event[4] = event[4].replace("&lt;br&gt;", "<br>")
     page = page.format(*event)
     
-    return u.html(page, "Event")
+    return u.html(page, f"Event: {event[1]}")

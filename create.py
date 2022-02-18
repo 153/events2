@@ -18,6 +18,16 @@ for n, L in enumerate(locations):
     locations[n] = [L[0], " ".join(L[1:])]
 ld = {L[0]: L[1] for L in locations}
 
+mlengths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+def date_check(y, m, d):
+    try:
+        test = bool(datetime.datetime.strptime(f"{y}{m}{d}", "%Y%m%d"))
+    except:
+        test = False
+
+    return test
+
 def locmenu():
     template = "<select name='loc'>\n"
     item = ' <option value="{0}">{1}</option>\n'
@@ -36,11 +46,12 @@ def page1():
     today = {"month": str(dt.month).zfill(2),
              "day": str(dt.day).zfill(2)}
     for x in today:
-        today[x] = f'"{today[x]}"'
-        forms[x] = forms[x].replace(today[x], today[x] + " selected")
+        forms[x] = forms[x].replace(today[x] +'"', today[x] + '" selected')
     with open("html/create1.html", "r") as create1:
         create1 = create1.read()
     create1 = create1.format(forms["month"], forms["day"], locmenu())
+    if s.debug:
+        create1 = "<hr><h2 style='color:red'>Debug/lock mode active. Event publishing disabled</h2><hr>" + create1
     return u.html(create1, "create (1/3)")
 
 @create.route('/create/next', methods=['POST'])
@@ -51,14 +62,8 @@ def page2():
     with open("html/create2.html", "r") as page:
         page = page.read()
     message = eval(page)
-    print(fields)
     for i in fields:
-        print(i)
-        print(request.form[i])
-    print([request.form[i] for i in fields])
-    for i in fields:
-        message += f"<input type='hidden' name='{i}' value='{request.form[i]}'>"
-        print(i, request.form[i])
+        message += f"<input type='hidden' name='{i}' value='{u.escape(request.form[i])}'>"
     if "dst" in request.form:
         message += "<input type='hidden' name='dst' value='1'>"
     else:
@@ -79,21 +84,22 @@ def page3():
         page = page.read()
     page = eval(page)
     for i in event:
-        page += f"<input type='hidden' name='{i}' value='{event[i]}'>"
+        page += f"<input type='hidden' name='{i}' value='{u.escape(event[i])}'>"
     return u.html(page, "create (3/3)")
 
 @create.route('/create/finish', methods=['POST'])
 def page4():
     fields = ["title", "host", "loc", "desc",
               "year", "month", "day", "hour", "tz", "dst"]
-    event = {i: escape(request.form[i]) for i in fields}
+    event = {i: u.escape(request.form[i]) for i in fields}
+    if not date_check(event["year"], event["month"], event["day"]):
+        return u.html("Invalid date.", "Error")
     event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
     event["fn"] = mkfilename(event["ymd"]) + ".txt"    
     writedb(event, s.debug)
     return request.form
 
 def mkfilename(ymd):
-    print(ymd)
     files = os.listdir("data")
     cnt = len([i for i in files if ymd in i])
     return ".".join([ymd, str(cnt).zfill(2)])
@@ -110,7 +116,6 @@ def writedb(event, debug=0):
                                    event["loc"], event["desc"], ""]))
     with open("data/list.txt", "a") as index:
         index.write(entry + "\n")
-    print("entry")
     
 # row 1: title
 # row 2: host, guest1, guest2
