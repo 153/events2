@@ -70,9 +70,9 @@ def cal(mont=2):
         nex = (mont + 1) % 13
     
     mon = ["<table>"]
-    mon.append(f"<tr><td><a href='/calendar/{prev}'>&#171; {prev}</a>")
+    mon.append(f"<tr><th><a href='/calendar/{prev}'>&#171; {prev}</a>")
     mon.append(f"<th colspan='5'>{names[mont]} {year}</td>")
-    mon.append(f"<td><a href='/calendar/{nex}'>{nex} &#187;</a>")    
+    mon.append(f"<th><a href='/calendar/{nex}'>{nex} &#187;</a>")    
     mon.append("<tr><th>Mon<th>Tue<th>Wed<th>Thu<th>Fri<th>Sat<th>Sun")
     
     while pos != [weeks, 6]:
@@ -124,26 +124,26 @@ def monthview(month):
        table += "<p>" + elist
     return u.html(table, f"Calendar: {year}/{month}")
 
-@index.route("/f/<fn>")
-def view_event(fn):
-    files = os.listdir("data")
-    print(files)
-    files = [f for f in files if len(f.split(".")) == 3]
-    if fn not in files:
-        return(u.html("Sorry, event can't be found!", "404"))
-    with open(f"data/{fn}", "r") as event:
-        event = event.read().splitlines()
-        # title, host, timezone, location, description
-    ymd = "/".join([fn[:4], fn[4:6], fn[6:8]])
-    hour = fn[8:10]
-    places = u.locations()
-    if " " in event[2]:
-        event[2] = event[2].split(" ")[0]
-    event[2] = f"{ymd} @ {hour}:00 ({event[2]})"
-    event[3] = f"<a href='{s._url}{event[3]}'>{places[event[3]]}</a>"
-    with open("html/event.html", "r") as page:
-        page = page.read()
-    event[4] = event[4].replace("&lt;br&gt;", "<br>")
-    page = page.format(*event)
+# @index.route("/f/<fn>")
+# def view_event(fn):
+#     files = os.listdir("data")
+#     print(files)
+#     files = [f for f in files if len(f.split(".")) == 3]
+#     if fn not in files:
+#         return(u.html("Sorry, event can't be found!", "404"))
+#     with open(f"data/{fn}", "r") as event:
+#         event = event.read().splitlines()
+#         # title, host, timezone, location, description
+#     ymd = "/".join([fn[:4], fn[4:6], fn[6:8]])
+#     hour = fn[8:10]
+#     places = u.locations()
+#     if " " in event[2]:
+#         event[2] = event[2].split(" ")[0]
+#     event[2] = f"{ymd} @ {hour}:00 ({event[2]})"
+#     event[3] = f"<a href='{s._url}{event[3]}'>{places[event[3]]}</a>"
+#     with open("html/event.html", "r") as page:
+#         page = page.read()
+#     event[4] = event[4].replace("&lt;br&gt;", "<br>")
+#     page = page.format(*event)
     
-    return u.html(page, f"Event: {event[1]}")
+#     return u.html(page, f"Event: {event[1]}")

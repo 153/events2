@@ -22,6 +22,7 @@ app.register_blueprint(event)
 def hello():
     ret = []
 #    ret.append("source: <a href='//github.com/153/events2'>github/153/events2</a><p>")
+    ret.append("A service provided for the Gikopoi community by anonymous<p>")
     ret.append("<center><table><tr>")
     ret.append("<td><a href='/create'><img src='/create.png'></a>")    
     ret.append("<td><a href='/calendar'><img src='/cal.png'></a>")    
