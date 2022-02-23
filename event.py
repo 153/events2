@@ -8,9 +8,6 @@ import utils as u
 locations = u.locations()
 event = Blueprint("event", __name__)
 
-entries = os.listdir("data")
-entries.remove("list.txt")
-
 @event.route("/e/<fn>")
 def view_event(fn):
     files = [f for f in os.listdir("data") if len(f.split(".")) == 3]
@@ -37,7 +34,7 @@ def view_event(fn):
         with open("html/comment.html", "r") as template:
             template = template.read()
         comments.append("<p><table>")
-        for e in event[:5:-1]:
+        for e in reversed(event[5:]):
             e = e.split(">")
             comments.append(template.format(*e))
         comments.append("</table>")        
@@ -75,15 +72,17 @@ def rsvp(fn):
             entries[n] = [e[0], str(int(e[1]) + 1), e[2]]
     entries = "\n".join([">".join(e) for e in entries])
     with open("data/list.txt", "w") as index:
-        index.write(entries)
+        index.write(entries + "\n")
     return(u.html("Thanks", "Thanks"))
 
 @event.route("/e/<fn>/comment", methods=['POST'])
 def comment(fn):
+    entries = os.listdir("data")
+    entries.remove("list.txt")
     if s.debug:
         return "Debug mode active, can't comment yet."    
     if fn not in entries:
-        return
+        return "Error"
     name = u.escape(request.form["name"], 12)
     msg = u.escape(request.form["comment"], 500, 1)
     if not name:
@@ -93,5 +92,5 @@ def comment(fn):
     else:
         response = ">".join([name, msg])
     with open(f"data/{fn}", "a") as data:
-        data.write(response)
+        data.write(response + "\n")
     return u.html("Thanks", "thanks")

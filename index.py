@@ -118,7 +118,7 @@ def monthview(month):
                               f"<td class='event'>{e}")
     print(eventlist)
     table = table.replace("<td> .", "<td class='null'>")
-    
+    table += ("<p><center><a href='/create/'>Create New Event</a></center>")
     elist = month_events(month)
     if "-" in elist:
        table += "<p>" + elist
