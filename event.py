@@ -37,7 +37,7 @@ def view_event(fn):
         with open("html/comment.html", "r") as template:
             template = template.read()
         comments.append("<p><table>")
-        for e in event[5:]:
+        for e in event[:5:-1]:
             e = e.split(">")
             comments.append(template.format(*e))
         comments.append("</table>")        
@@ -66,6 +66,16 @@ def rsvp(fn):
     data = "\n".join(data)
     with open(f"data/{fn}", "w") as update:
         update.write(data)
+    with open("data/list.txt", "r") as entries:
+        entries = entries.read().splitlines()
+    entries = [e.split(">") for e in entries]
+    for n, e in enumerate(entries):
+        if e[0] == fn:
+            
+            entries[n] = [e[0], str(int(e[1]) + 1), e[2]]
+    entries = "\n".join([">".join(e) for e in entries])
+    with open("data/list.txt", "w") as index:
+        index.write(entries)
     return(u.html("Thanks", "Thanks"))
 
 @event.route("/e/<fn>/comment", methods=['POST'])
@@ -76,10 +86,12 @@ def comment(fn):
         return
     name = u.escape(request.form["name"], 12)
     msg = u.escape(request.form["comment"], 500, 1)
-    if not name or not msg:
-        return "<br>".join(name, msg)
+    if not name:
+        name = "Anonymous"
+    if not msg:
+        return "needs a message"
     else:
-        response = "\n" + ">".join([name, msg])
+        response = ">".join([name, msg])
     with open(f"data/{fn}", "a") as data:
         data.write(response)
     return u.html("Thanks", "thanks")
