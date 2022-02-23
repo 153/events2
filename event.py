@@ -35,7 +35,7 @@ def view_event(fn):
             template = template.read()
         comments.append("<p><table>")
         for e in reversed(event[5:]):
-            e = e.split(">")
+            e = e.split("<>")
             comments.append(template.format(*e))
         comments.append("</table>")        
         event.insert(5, fn)
@@ -62,13 +62,12 @@ def rsvp(fn):
     data[1] += ">" + name
     data = "\n".join(data)
     with open(f"data/{fn}", "w") as update:
-        update.write(data)
+        update.write(data + "\n")
     with open("data/list.txt", "r") as entries:
         entries = entries.read().splitlines()
     entries = [e.split(">") for e in entries]
     for n, e in enumerate(entries):
-        if e[0] == fn:
-            
+        if e[0] == fn:            
             entries[n] = [e[0], str(int(e[1]) + 1), e[2]]
     entries = "\n".join([">".join(e) for e in entries])
     with open("data/list.txt", "w") as index:
@@ -90,7 +89,7 @@ def comment(fn):
     if not msg:
         return "needs a message"
     else:
-        response = ">".join([name, msg])
+        response = "<>".join([name, msg])
     with open(f"data/{fn}", "a") as data:
         data.write(response + "\n")
     return u.html("Thanks", "thanks")
