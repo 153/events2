@@ -1,4 +1,4 @@
-<form action="/create/next" method="POST">
+<form action="/create/preview" method="POST">
 <table>
   <tr><th>Title:
       <td><input type="text" name="title" style="width:15em" required>
@@ -46,6 +46,7 @@
   <abbr title="Daylight Savings Time"> DST</abbr>?
   <input type="checkbox" name="dst" value="1">
   <tr><th>Location: <td>{2}
-      <tr><th colspan="2"><input type="submit" value="Next -&gt;">
-</table>	    
-</form>
+<tr><th>Info: <td><textarea name="desc" rows=3 cols=60 required></textarea>
+<tr><th>Host: <td><input name="host" placeholder="Anonymous">
+<tr><th colspan="2"><center><input type="submit" value="Next -&gt;"></center>
+</table>	

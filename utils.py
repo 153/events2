@@ -16,6 +16,7 @@ def locations():
     return ld
 
 def escape(text, maxlen=0, newlines=0):
+    text = text.strip()
     keys = {"<": "&lt;", ">": "&gt;",
             "'": "&apos;", "\"": "&quot;"}
     for key in keys:

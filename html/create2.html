@@ -1,8 +1,4 @@
-f"""<form action='/create/preview' method='post'>
-<table>
-<tr><th>Title: <td>{request.form["title"]}
-<tr><th>Date: <td>{event_d[0]}-{event_d[1]}-{event_d[2]} @ {event_d[3]}:00 ({request.form["tz"]} time)
-<tr><th>Stage: <td><a href="{s._url}{loc}">{ld[loc]}</a>
+f"""<table>
 <tr><th>Info: <td><textarea name="desc" rows=3 cols=60 required></textarea>
 <tr><th>Host: <td><input name="host" placeholder="Anonymous">
 <tr><th colspan="2"><center><input type="submit" value="Next -&gt;"></center>

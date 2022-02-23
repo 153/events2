@@ -47,35 +47,23 @@ def page1():
              "day": str(dt.day).zfill(2)}
     for x in today:
         forms[x] = forms[x].replace(today[x] +'"', today[x] + '" selected')
-    with open("html/create1.html", "r") as create1:
-        create1 = create1.read()
-    create1 = create1.format(forms["month"], forms["day"], locmenu())
+    with open("html/create1.html", "r") as message:
+        message = message.read()
+    message = message.format(forms["month"], forms["day"], locmenu())
     if s.debug:
-        create1 = "<hr><h2 style='color:red'>Debug/lock mode active. Event publishing disabled</h2><hr>" + create1
-    return u.html(create1, "create (1/3)")
-
-@create.route('/create/next', methods=['POST'])
-def page2():
-    event_d = [request.form[n] for n in ["year", "month", "day", "hour"]]
-    fields = ["title", "loc", "year", "month", "day", "hour", "tz"]
-    loc = request.form["loc"]
-    with open("html/create2.html", "r") as page:
-        page = page.read()
-    message = eval(page)
-    for i in fields:
-        message += f"<input type='hidden' name='{i}' value='{u.escape(request.form[i])}'>"
-    if "dst" in request.form:
-        message += "<input type='hidden' name='dst' value='1'>"
-    else:
-        message += "<input type='hidden' name='dst' value='0'>"
-    message += "</form>"
-    return u.html(message, "create (2/3)")
+        message = "<hr><h2 style='color:red'>Debug/lock mode active. Event publishing disabled</h2><hr>" + message
+    return u.html(message, "create (1/2)")
 
 @create.route('/create/preview', methods=['POST'])
 def page3():
     fields = ["title", "host", "loc", "desc",
-              "year", "month", "day", "hour", "tz", "dst"]
+              "year", "month", "day", "hour", "tz"]
+    # dst may also be in fields
     event = {i: request.form[i] for i in fields}
+    if not "dst" in request.form:
+        event["dst"] = "0"
+    else:
+        event["dst"] = "1"
     if not event["host"]:
         event["host"] = "Anonymous"    
     event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
@@ -89,15 +77,16 @@ def page3():
 
 @create.route('/create/finish', methods=['POST'])
 def page4():
-    fields = ["title", "host", "loc", "desc",
-              "year", "month", "day", "hour", "tz", "dst"]
+    fields = ["title", "host", "loc", "desc", "dst",
+              "year", "month", "day", "hour", "tz"]
+    # dst removed
     event = {i: u.escape(request.form[i]) for i in fields}
     if not date_check(event["year"], event["month"], event["day"]):
         return u.html("Invalid date.", "Error")
     event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
     event["fn"] = mkfilename(event["ymd"]) + ".txt"    
     writedb(event, s.debug)
-    return request.form
+    return str("<body>" + str(request.form))
 
 def mkfilename(ymd):
     files = os.listdir("data")

@@ -1,9 +1,11 @@
+<form method="post" action="/e/{5}/rsvp">
 <table>
   <tr><th>Title:<td>{0}
   <tr><th>When:<td>{2}
   <tr><th>Where:<td>{3}
   <tr><th>What:<td>{4}
   <tr><th>Who:<td>{1}
-  <tr><th>RSVP:<td><input type='name'>&emsp;
-  	           <input name='rsvp' type='submit' value='RSVP!'>
+  <tr><th>RSVP:<td><input name='rsvp' maxlength='12' required>&emsp;
+  	           <input type='submit' value='RSVP!'>
 </table>  
+</form>
