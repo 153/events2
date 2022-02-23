@@ -41,6 +41,7 @@ def event_index():
         entries[n].append(when)
         e[2] = f"<a href='/e/{e[0]}'>{e[2]}</a>"
     etable = ["<table><tr><th>date<th>title<th>guests"]
+    etable.append("<tr><td colspan='3'><center><a href='/create/'>Create new!</a></center>")    
     for e in entries:
         etable.append("".join(["<tr><td>", "<td>".join([e[3], e[2], e[1]])]))
     etable.append("</table>")

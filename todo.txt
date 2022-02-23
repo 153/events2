@@ -1,13 +1,10 @@
 sanitize input
 templates/css
-
-event view
-calendar view (wip)
+antispam
 
 captcha
-rsvp
-comments
 tripcodes
+thread view
 
 timezones
 atom feeds

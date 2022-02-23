@@ -73,7 +73,7 @@ def page3():
     page = eval(page)
     for i in event:
         page += f"<input type='hidden' name='{i}' value='{u.escape(event[i])}'>"
-    return u.html(page, "create (3/3)")
+    return u.html(page, "create (2/2)")
 
 @create.route('/create/finish', methods=['POST'])
 def page4():
