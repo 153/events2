@@ -10,7 +10,14 @@ import utils as u
 index = Blueprint("index", __name__)
 
 year = date.today().year
+month_names = ["", "January", "February", "March", "April", "May", "June",
+             "July", "August", "September", "October", "November",
+             "December"]
+
 def eventdb():
+    """Load the events and return it as a 2D array of strings.
+
+    events[] = [year, month, day, filename, title, comments]"""
     with open("data/list.txt", "r") as events:
         events = events.read().splitlines()
     events = sorted(events)
@@ -20,6 +27,8 @@ def eventdb():
     return events
 
 def month_events(month):
+    """Return an HTML table of events in a given month."""
+    
     events = eventdb()
     eventlist = [e for e in events if int(e[1]) == int(month)]
     table = ["<table><tr><th>date<th>title"]
@@ -31,6 +40,7 @@ def month_events(month):
     
 @index.route('/list/')
 def event_index():
+    """Show a table of monthly events in HTML."""
     with open("data/list.txt", "r") as entries:
         entries = entries.read().splitlines()
     entries = [e.split(">") for e in entries]
@@ -48,17 +58,22 @@ def event_index():
     return u.html("".join(etable), "Event list")
 
 def cal(mont=2):
-    names = ["", "January", "February", "March", "April", "May", "June",
-             "July", "August", "September", "October", "November",
-             "December"]
+    "For a given month, return a calendar as an HTML-formatted table."
     monts = str(mont).zfill(2) # get month as 0 padded string
+
+    # Get the last day of the month... 
     last = calendar.monthrange(year, mont)[1]
+
+    # Find the number of weeks in a month
     d1 = date(year, mont, 1)
     d2 = date(year, mont, last)
     weeks = (d2-d1).days//7
+    
+    # Get the first and last days of the month's days of the week.
     start = pd.Timestamp(f'2022-{monts}-01').dayofweek
     end = pd.Timestamp(f'2022-{monts}-' + \
                       str(calendar.monthrange(2022, mont)[1])).dayofweek
+    
     extra = 6 - end
     if (end == 0) or (start == 6):
         weeks += 1
@@ -72,7 +87,7 @@ def cal(mont=2):
     
     mon = ["<table>"]
     mon.append(f"<tr><th><a href='/calendar/{prev}'>&#171; {prev}</a>")
-    mon.append(f"<th colspan='5'>{names[mont]} {year}</td>")
+    mon.append(f"<th colspan='5'>{month_names[mont]} {year}</td>")
     mon.append(f"<th><a href='/calendar/{nex}'>{nex} &#187;</a>")    
     mon.append("<tr><th>Mon<th>Tue<th>Wed<th>Thu<th>Fri<th>Sat<th>Sun")
     
@@ -100,17 +115,19 @@ def cal(mont=2):
     else:
         mon.append("<td>" + str(cnt+1))
     mon.append("</table>")
+    # Format the month based on its events:
     month_events(mont)
-    # monts = 
     return "".join(mon)
 
 @index.route('/calendar/')
 def currmonth():
+    """Show the current month as a calendar with a list of events.""" 
     month = date.today().month
     return monthview(month)
 
 @index.route('/calendar/<month>/')
 def monthview(month):
+    """Show a calendar for a given month and an HTML table of its events."""
     table = cal(int(month))
     events = eventdb()
     eventlist = [e[2] for e in events if int(e[1]) == int(month)]

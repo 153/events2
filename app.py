@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from flask import Flask, request
 from index import index
 from create import create
@@ -32,7 +33,7 @@ def hello():
     ret.append("<th><a href='/calendar'>calendar</a>")    
     ret.append("<th><a href='/list'>index</a>")
     ret.append("</table></center>")
-    return u.html("".join(ret), "gikopoi events")
+    return u.html("\n".join(ret), "gikopoi events")
 
 # start the application 
 if __name__ == "__main__":
