@@ -29,6 +29,6 @@ def hello():
 # start the application 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=_port)
-    print(request)
+    # request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
 
 app.run(debug=True)    

@@ -10,6 +10,7 @@ event = Blueprint("event", __name__)
 
 @event.route("/e/<fn>")
 def view_event(fn):
+    print(request.environ['HTTP_X_FORWARDED_FOR'])
     files = [f for f in os.listdir("data") if len(f.split(".")) == 3]
     if fn not in files:
         return(u.html("Sorry, event can't be found!", "404"))
@@ -50,11 +51,11 @@ def view_event(fn):
 
 @event.route("/e/<fn>/rsvp", methods=['POST'])
 def rsvp(fn):
+    print(request.environ['HTTP_X_FORWARDED_FOR'])
     if s.debug:
         return "Debug mode active, can't rsvp yet."
     if "list" in fn:
         return str("!" + fn)
-    print(request.form["rsvp"])
     name = u.escape(request.form["rsvp"], 12)
     if not name:
         return str(name)
@@ -79,6 +80,7 @@ def rsvp(fn):
 
 @event.route("/e/<fn>/comment", methods=['POST'])
 def comment(fn):
+    print(request.environ['HTTP_X_FORWARDED_FOR'])
     entries = os.listdir("data")
     entries.remove("list.txt")
     if s.debug:

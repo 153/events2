@@ -70,7 +70,7 @@ def page2():
     event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
     event["utc"] = u.offset(event["ymd"], event["tz"], event["dst"])
     event["fn"] = mkfilename(event["utc"]) + ".txt"
-    with open("html/create3.html", "r") as page:
+    with open("html/create2.html", "r") as page:
         page = page.read()
     page = eval(page)
     event2 = [f"<input type='hidden' name='{i}' value='{u.escape(event[i])}'>"
@@ -94,6 +94,7 @@ def page3():
     event["utc"] = u.offset(event["ymd"], event["tz"], event["dst"])    
     event["fn"] = mkfilename(event["utc"]) + ".txt"    
     writedb(event, s.debug)
+    print(request.environ['HTTP_X_FORWARDED_FOR'])
     return str("<body>" + str(request.form))
 
 def mkfilename(ymd):

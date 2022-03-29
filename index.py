@@ -134,7 +134,6 @@ def monthview(month):
     for e in eventlist:
         table = table.replace(f"<td>{e}",
                               f"<td class='event'>{e}")
-    print(eventlist)
     table = table.replace("<td> .", "<td class='null'>")
     table += ("<p><center><a href='/create/'>Create New Event</a></center>")
     elist = month_events(month)
