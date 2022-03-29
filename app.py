@@ -22,18 +22,9 @@ app.register_blueprint(event)
 @app.route("/")
 def hello():
     ret = []
-#    ret.append("source: <a href='//github.com/153/events2'>github/153/events2</a><p>")
-    ret.append("A service provided for the Gikopoi community by anonymous<p>")
-    ret.append("<center><table><tr>")
-    ret.append("<td><a href='/create'><img src='/create.png'></a>")    
-    ret.append("<td><a href='/calendar'><img src='/cal.png'></a>")    
-    ret.append("<td><a href='/list'><img src='/view.png'></a>")
-    ret.append("<tr>")
-    ret.append("<th><a href='/create'>create</a>")
-    ret.append("<th><a href='/calendar'>calendar</a>")    
-    ret.append("<th><a href='/list'>index</a>")
-    ret.append("</table></center>")
-    return u.html("\n".join(ret), "gikopoi events")
+    with open("html/index.html", "r") as index:
+        index = index.read()
+    return u.html(index, "gikopoi events")
 
 # start the application 
 if __name__ == "__main__":

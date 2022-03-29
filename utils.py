@@ -6,6 +6,9 @@ with open("html/head.html", "r") as head:
 def html(body, title="Events"):
     return head.format(body, title)
 
+def redir(loc, secs=0):
+    return f"<meta http-equiv='refresh' content='{secs};url={loc}'>"
+
 def locations():
     with open("locations.txt", "r") as locations:
         locations = locations.read().splitlines()

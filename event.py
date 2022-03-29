@@ -23,7 +23,7 @@ def view_event(fn):
     event[1] = f"<b>{len(event[1])} guests</b>: {', '.join(event[1])}"
     if " " in event[2]:
         event[2] = event[2].split(" ")[0]
-    event[2] = f"{ymd} @ {hour}:00 ({event[2]})"
+    event[2] = f"{ymd} @ {hour}:00 <abbr title='timezone'>&#9200; {event[2]}</abbr>"
     event[3] = f"<a href='{s._url}{event[3]}'>{places[event[3]]}</a>"
     event[4] = event[4].replace("&lt;br&gt;", "<br>")
     comments = []
@@ -72,7 +72,9 @@ def rsvp(fn):
     entries = "\n".join([">".join(e) for e in entries])
     with open("data/list.txt", "w") as index:
         index.write(entries + "\n")
-    return(u.html("Thanks", "Thanks"))
+    return(u.html(f"<a href='/e/{fn}'>Return to event</a>" \
+                  + u.redir(f"/e/{fn}", 3),
+                  "You have RSVP'd"))
 
 @event.route("/e/<fn>/comment", methods=['POST'])
 def comment(fn):
@@ -92,4 +94,6 @@ def comment(fn):
         response = "<>".join([name, msg])
     with open(f"data/{fn}", "a") as data:
         data.write(response + "\n")
-    return u.html("Thanks", "thanks")
+    return u.html("<a href='/e/{fn}'>Return to event</a>" \
+                  + u.redir(f"/e/{fn}", 3),
+    "Comment posted",)

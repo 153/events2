@@ -1,3 +1,6 @@
+event published confirmation screen
+comment published confirmation screen
+
 sanitize input
 templates/css
 antispam
