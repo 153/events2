@@ -5,7 +5,7 @@ f"""<form action='/create/finish' method='post'>
   		    {event["tz"]} ({event["dst"]})
   <tr><th>Host: <td>{event["host"]}
   <tr><th>Location: <td><a href="{s._url}{event["loc"]}">{ld[event["loc"]]}</a> ({event["loc"]})
-  <tr><th>Description: <td>{event["desc"]}
+  <tr><th>Description: <td>{u.escape(event["desc"], 0, 1)}
   <tr><th colspan="2"><input type="submit" value="Publish">
 </table>  
 """

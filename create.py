@@ -94,7 +94,8 @@ def page3():
     event["utc"] = u.offset(event["ymd"], event["tz"], event["dst"])    
     event["fn"] = mkfilename(event["utc"]) + ".txt"    
     writedb(event, s.debug)
-    print(request.environ['HTTP_X_FORWARDED_FOR'])
+    u.logger("CREATE", request.environ['HTTP_X_FORWARDED_FOR'],
+             event["fn"], event["title"])
     return str("<body>" + str(request.form))
 
 def mkfilename(ymd):

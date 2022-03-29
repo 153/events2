@@ -1,3 +1,4 @@
+import time
 import flask
 from datetime import datetime
 from datetime import timedelta
@@ -49,6 +50,13 @@ def offset(ymdh, tz, dst=0):
     adjust = adjust.strftime("%Y%m%d%H")
     return adjust
 
+def logger(event, ip, fn, content):
+    now = str(int(time.time()))
+    entry = " ".join([now, event, ip, fn, content])
+    print(entry)
+    with open("log.txt", "a") as log:
+        log.write(entry + "\n")
+    
 if __name__ == "__main__":
     tests = ["<test", "'test\r\n<"]
     for t in tests:
