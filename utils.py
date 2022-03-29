@@ -1,4 +1,6 @@
 import flask
+from datetime import datetime
+from datetime import timedelta
 
 with open("html/head.html", "r") as head:
     head = head.read()
@@ -33,6 +35,19 @@ def escape(text, maxlen=0, newlines=0):
     if maxlen:
         text = text[:maxlen]
     return text
+
+def offset(ymdh, tz, dst=0):
+    dformat = "%Y%m%d%H"
+    event_dt = datetime.strptime(ymdh, dformat)
+    tz = tz[:3]
+    if tz[0] not in ["+", "-"]:
+        return False
+    
+    tz = int(tz)
+    tz += int(dst)
+    adjust = event_dt - timedelta(hours=int(tz))
+    adjust = adjust.strftime("%Y%m%d%H")
+    return adjust
 
 if __name__ == "__main__":
     tests = ["<test", "'test\r\n<"]
