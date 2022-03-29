@@ -6,6 +6,6 @@ window.onload =  function mydate() {
     var localized = moment(utc);
     var until = localized.fromNow();
     document.getElementById('utc').innerHTML =
-	"<br>Local time (UTC " + tz.toString().padStart(2, '0') + "): <br> "
-	+ until + ", on " + localized.calendar();
+	"&#8987; Local time (UTC " + tz.toString().padStart(2, '0') + "): <br> "
+	+ "&emsp;<i>" + until + ", on " + localized.calendar() + "</i>";
   }

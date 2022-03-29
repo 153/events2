@@ -73,18 +73,23 @@ def page2():
     with open("html/create3.html", "r") as page:
         page = page.read()
     page = eval(page)
-    for i in event:
-        page += f"<input type='hidden' name='{i}' value='{u.escape(event[i])}'>"
+    event2 = [f"<input type='hidden' name='{i}' value='{u.escape(event[i])}'>"
+             for i in event if i != "desc"]
+    event2.append(f"<textarea style='visibility:hidden' name='desc'>{event['desc']}</textarea>")
+    for i in event2:
+        page += i
     return u.html(page, "create (2/2)")
 
 @create.route('/create/finish', methods=['POST'])
 def page3():
-    fields = ["title", "host", "loc", "desc", "dst",
+    fields = ["title", "host", "loc", "dst",
               "year", "month", "day", "hour", "tz"]
     # dst removed
     event = {i: u.escape(request.form[i]) for i in fields}
+    event["desc"] = request.form["desc"]
     if not date_check(event["year"], event["month"], event["day"]):
         return u.html("Invalid date.", "Error")
+    event["desc"] = u.escape(event["desc"], 800, 1)
     event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
     event["utc"] = u.offset(event["ymd"], event["tz"], event["dst"])    
     event["fn"] = mkfilename(event["utc"]) + ".txt"    
@@ -106,8 +111,7 @@ def writedb(event, debug=0):
     entry = ">".join([event["fn"], "1", event["title"]])
     if debug == 1:
         return
-    event["desc"] = event["desc"].replace("\r\n", "<br>")\
-        
+    event["desc"] = event["desc"].replace("\r\n", "<br>")
     with open("data/" + event["fn"], "w") as eventfile:
         eventfile.write("\n".join([event["title"], event["host"],
                                    event["tz"] + " " + event["dst"],
