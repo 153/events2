@@ -34,7 +34,7 @@ def view_event(fn):
     else:
         with open("html/comment.html", "r") as template:
             template = template.read()
-        comments.append("<p><table>")
+        comments.append("<p><table><th colspan=2>Newest comments first")
         for e in reversed(event[5:]):
             e = e.split("<>")
             comments.append(template.format(*e))
@@ -96,6 +96,6 @@ def comment(fn):
     u.logger("COMMENT", request.environ['HTTP_X_FORWARDED_FOR'], fn, msg)
     with open(f"data/{fn}", "a") as data:
         data.write(response + "\n")
-    return u.html("<a href='/e/{fn}'>Return to event</a>" \
+    return u.html(f"<a href='/e/{fn}'>Return to event</a>" \
                   + u.redir(f"/e/{fn}", 3),
     "Comment posted",)
