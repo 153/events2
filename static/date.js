@@ -8,12 +8,15 @@ window.onload =  function mydate() {
 	tz = "+" + tz.toString().padStart(2, '0');
     }
     tz += "00"
+    // Get the event date in UTC..
     var utc = document.getElementById('utc').innerHTML;
-    console.log(utc);
+    // and convert it to local time
     var localized = moment(utc);
-    var cnt = Math.floor(moment.duration(localized.diff(moment())).as('days'));
-    if ((cnt < -1) || (cnt > 1)) {
-	var until = moment().to(localized) + ", ";
+    var a = localized.clone()
+    var b = moment();
+    var cnt = (a.startOf('day').diff(b.endOf('day'), 'days'));
+    if (cnt != 0) {
+	var until = moment().to(localized) + ", on ";
     } else {
 	var until = ""
     };
