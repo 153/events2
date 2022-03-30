@@ -11,8 +11,14 @@ window.onload =  function mydate() {
     var utc = document.getElementById('utc').innerHTML;
     console.log(utc);
     var localized = moment(utc);
-    var until = localized.fromNow();
+    var cnt = Math.floor(moment.duration(localized.diff(moment())).as('days'));
+    if ((cnt < -1) || (cnt > 1)) {
+	var until = moment().to(localized) + ", ";
+    } else {
+	var until = ""
+    };
+//    var until = moment(utc).duration().asDays();
     document.getElementById('utc').innerHTML =
 	"&#8987; Local time (UTC " + tz.toString().padStart(2, '0') + "): <br> "
-	+ "&emsp;<i>" + until + ", on " + localized.calendar() + "</i>";
+	 + "&emsp;<i>" + until + localized.calendar() + "</i>";
   }
