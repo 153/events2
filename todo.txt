@@ -1,12 +1,17 @@
-event published confirmation screen
-
 sanitize input (WIP)
 templates/css (WIP)
-icalendar? (WIP)
-antispam
 
-captcha
-tripcodes
+General:
+  seperate past from future in indexes
 
-atom feeds
-bots? (irc)
+Web: 
+  click day in calendar vie
+  antispam
+  captcha
+  tripcodes  
+
+Non-web:
+  atom feeds
+  grab "x many future events" file
+  grab "x events this month" file
+  bots? (irc)

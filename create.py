@@ -96,7 +96,9 @@ def page3():
     writedb(event, s.debug)
     u.logger("CREATE", request.environ['HTTP_X_FORWARDED_FOR'],
              event["fn"], event["title"])
-    return str("<body>" + str(request.form))
+    page = u.redir(f"/e/{event['fn']}", 4) + "Go see " \
+        + f"<a href='/e/{event['fn']}'>your event!</a>"
+    return u.html(page, "Event published!")
 
 def mkfilename(ymd):
     files = os.listdir("data")
