@@ -26,7 +26,7 @@ def show_ics(fn):
         if c in e["desc"]:
             e["desc"] = e["desc"].replace(c, chars[c])
     output = eval(f'f"""{temp}"""')
-    return Response(output, mimetype="text/plain")
+    return Response(output, mimetype="text/calendar")
 
 show_ics("2022033123.00.txt")
 show_ics("2022042018.00.txt")
