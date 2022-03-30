@@ -12,9 +12,9 @@ Events can be viewed as a list or be represented on a calendar.
 
 RSS feeds for the day & upcoming events will also be made available,
 as to announce events easily to e.g. chatrooms, RSS reader apps, etc.
-iCalendar also to come.
+iCalendar is currently a work in progress.
 
-Developer chat: `#gikopoi` @ `irc.rizon.net`
+Developer chat: `#gikopoi` / `#sageru` @ `irc.rizon.net`
 
 static/moment.min.js (C) JS Foundation under MIT license
 Source @ https://momentjs.com
