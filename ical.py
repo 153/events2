@@ -1,4 +1,10 @@
+from flask import Blueprint
+from flask import request
 import settings as s
+
+ical = Blueprint("ical", __name__)
+
+@ical.route("/ical/<fn>.ics")
 def show_ics(fn):
     with open(f"./data/{fn}", "r") as data:
         data = data.read().splitlines()
@@ -17,8 +23,7 @@ def show_ics(fn):
         if c in e["desc"]:
             e["desc"] = e["desc"].replace(c, chars[c])
     e["loc"] = data[3]
-    print(e)
-    print(eval(f'f"""{temp}"""'))
+    return eval(f'f"""{temp}"""')
 
 show_ics("2022033123.00.txt")
 show_ics("2022042018.00.txt")

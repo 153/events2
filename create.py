@@ -116,7 +116,6 @@ def writedb(event, debug=0):
     event["desc"] = event["desc"].replace("\r\n", "<br>")
     with open("data/" + event["fn"], "w") as eventfile:
         eventfile.write("\n".join([event["title"], event["host"],
-                                   event["tz"] + " " + event["dst"],
                                    event["loc"], event["desc"], ""]))
     with open("data/list.txt", "a") as index:
         index.write(entry + "\n")

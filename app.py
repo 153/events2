@@ -3,6 +3,7 @@ from flask import Flask, request
 from index import index
 from create import create
 from event import event
+from ical import ical
 import settings as s
 import utils as u
 
@@ -18,6 +19,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.register_blueprint(index)
 app.register_blueprint(create)
 app.register_blueprint(event)
+app.register_blueprint(ical)
 
 @app.route("/")
 def hello():

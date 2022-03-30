@@ -21,10 +21,10 @@ def view_event(fn):
     places = u.locations()
     event[1] = event[1].split(">")
     event[1] = f"<b>{len(event[1])} guests</b>: {', '.join(event[1])}"
-    event[2] = "&#127760; UTC (Universal time): " \
+    event.insert(2, "&#127760; UTC (Universal time): " \
         + f"<br> &emsp;{ymd} @ {hour}:00<br>" \
         + "<span onload='mydate' id='utc'>" \
-        + f"{ymd.replace('/', '-')}T{hour}:00:00Z</span>"
+        + f"{ymd.replace('/', '-')}T{hour}:00:00Z</span>")
     event[3] = f"<a href='{s._url}{event[3]}'>{places[event[3]]}</a>"
     event[4] = event[4].replace("&lt;br&gt;", "<br>")
     comments = []
