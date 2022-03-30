@@ -1,15 +1,12 @@
 event published confirmation screen
-comment published confirmation screen
 
-sanitize input
-templates/css
+sanitize input (WIP)
+templates/css (WIP)
+icalendar? (WIP)
 antispam
 
 captcha
 tripcodes
-thread view
 
-timezones
 atom feeds
-icalendar?
 bots? (irc)
