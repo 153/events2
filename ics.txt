@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:gikopoi.com//events2
+BEGIN:VEVENT
+UID:{s.ics_prefix}-{fn}
+CLASS:PUBLIC
+DTSTAMP:{e["iso"]}
+DTSTART:{e["iso"]}
+SUMMARY;LANGUAGE=en-US:{s.ics_title} - {e["title"]}
+ORGANIZER:{e["host"]}
+DESCRIPTION:{e["desc"]}
+LOCATION:{s._url}{e["loc"]}
+URI:{s._url}{e["loc"]}
+END:VEVENT
+END:VCALENDAR
