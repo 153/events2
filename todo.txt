@@ -5,7 +5,8 @@ General:
   seperate past from future in indexes
 
 Web: 
-  click day in calendar vie
+  calendar view: day
+  calendar view: year
   antispam
   captcha
   tripcodes  
