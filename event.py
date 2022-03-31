@@ -54,7 +54,7 @@ def rsvp(fn):
         return "Debug mode active, can't rsvp yet."
     if "list" in fn:
         return str("!" + fn)
-    name = u.escape(request.form["rsvp"], 12)
+    name = u.escape(request.form["rsvp"], 20)
     if not name:
         return str(name)
     u.logger("RSVP", request.environ['HTTP_X_FORWARDED_FOR'], fn, name)    
@@ -85,7 +85,7 @@ def comment(fn):
         return "Debug mode active, can't comment yet."    
     if fn not in entries:
         return "Error"
-    name = u.escape(request.form["name"], 12)
+    name = u.escape(request.form["name"], 20)
     msg = u.escape(request.form["comment"], 500, 1)
     if not name:
         name = "Anonymous"
