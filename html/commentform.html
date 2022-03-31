@@ -1,7 +1,8 @@
 <p>
 <form action="/e/{5}/comment" method="post" >
 <table>
-  <tr><th>Name:<td><input type='text' name='name' placeholder="Anonymous">
+  <tr><th>Name:<td><input type='text' name='name' maxlength='20'
+			  placeholder="Anonymous">
 &emsp;&emsp;	<input type="submit" value="Comment!">
   <tr><th>Comment: <td> <textarea required name='comment' rows=5 cols=30></textarea>
 </table>
