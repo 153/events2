@@ -12,7 +12,9 @@ Web:
   tripcodes  
 
 Non-web:
-  atom feeds: include date in event header
+  json settings?
+  atom: "today's events"
+  atom: X hour alert before event (settings)
   grab "x many future events"
   grab "x events this month"
   bots? (irc)
