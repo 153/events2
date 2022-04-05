@@ -19,8 +19,6 @@ for n, L in enumerate(locations):
     locations[n] = [L[0], " ".join(L[1:])]
 ld = {L[0]: L[1] for L in locations}
 
-mlengths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
 def date_check(y, m, d):
     try:
         test = bool(datetime.strptime(f"{y}{m}{d}", "%Y%m%d"))
@@ -111,11 +109,11 @@ def writedb(event, debug=0):
     # row 3: giko location name
     # row 4: description (<br> allowed)
     # row 5-: name, comment
-    
-    entry = ">".join([event["fn"], "1", event["title"]])
+    event["desc"] = event["desc"].replace("\r\n", "<br>")    
+    entry = ">".join([event["fn"], "1", event["title"],
+                      event["loc"], event["desc"]])
     if debug == 1:
         return
-    event["desc"] = event["desc"].replace("\r\n", "<br>")
     with open("data/" + event["fn"], "w") as eventfile:
         eventfile.write("\n".join([event["title"], event["host"],
                                    event["loc"], event["desc"], ""]))

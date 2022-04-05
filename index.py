@@ -28,7 +28,6 @@ def eventdb():
 
 def month_events(month):
     """Return an HTML table of events in a given month."""
-    
     events = eventdb()
     eventlist = [e for e in events if int(e[1]) == int(month)]
     table = ["<table><tr><th>date<th>title"]
@@ -53,7 +52,8 @@ def event_index():
     etable = ["<table><tr><th>date<th>title<th>guests"]
     etable.append("<tr><td colspan='3'><center><a href='/create/'>Create new!</a></center>")    
     for e in entries:
-        etable.append("".join(["<tr><td>", "<td>".join([e[3], e[2], e[1]])]))
+        print(e)
+        etable.append("".join(["<tr><td>", "<td>".join([e[-1], e[2], e[1]])]))
     etable.append("</table>")
     return u.html("".join(etable), "Event list")
 
