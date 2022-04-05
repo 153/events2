@@ -12,7 +12,7 @@ Web:
   tripcodes  
 
 Non-web:
-  atom feeds
+  atom feeds: include date in event header
   grab "x many future events"
   grab "x events this month"
   bots? (irc)

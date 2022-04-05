@@ -39,8 +39,6 @@ def ld():
     with open("data/list.txt", "r") as entries:
         entries = sorted(entries.read().splitlines())
     for n, e in enumerate(entries):
-        # filename, guests, title
-        # -> fn, datetime, guests, title
         e = e.split(">")
         e.insert(1, e[0][:-7] + "00")
         e[1] = datetime.strptime(e[1], "%Y%m%d%H%M")
