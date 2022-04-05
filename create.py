@@ -2,7 +2,6 @@ import os
 from flask import Blueprint
 from flask import request
 from flask import escape
-from datetime import timedelta
 from datetime import datetime
 import settings as s
 import utils as u
@@ -20,6 +19,7 @@ for n, L in enumerate(locations):
 ld = {L[0]: L[1] for L in locations}
 
 def date_check(y, m, d):
+    """Ensure that a date is valid."""
     try:
         test = bool(datetime.strptime(f"{y}{m}{d}", "%Y%m%d"))
     except:
@@ -28,6 +28,7 @@ def date_check(y, m, d):
     return test
 
 def locmenu():
+    """Build an HTML dropdown menu of Gikopoi rooms."""
     template = "<select name='loc'>\n"
     item = ' <option value="{0}">{1}</option>\n'
     for L in locations:
@@ -38,6 +39,7 @@ def locmenu():
 
 @create.route('/create/')
 def page1():
+    """Get information about an event on Gikopoi"""
     forms = {"month":"", "day":""}
     for f in forms:
         with open(f"html/{f}.html", "r") as template:
@@ -50,11 +52,13 @@ def page1():
         message = message.read()
     message = message.format(forms["month"], forms["day"], locmenu())
     if s.debug:
-        message = "<hr><h2 style='color:red'>Debug/lock mode active. Event publishing disabled</h2><hr>" + message
+        message = "<hr><h2 style='color:red'>Debug/lock mode active."
+        "Event publishing disabled</h2><hr>" + message
     return u.html(message, "create (1/2)")
 
 @create.route('/create/preview', methods=['POST'])
 def page2():
+    """Confirm details about an event on Gikopoi"""
     fields = ["title", "host", "loc", "desc",
               "year", "month", "day", "hour", "tz"]
     # dst may also be in fields
@@ -80,6 +84,7 @@ def page2():
 
 @create.route('/create/finish', methods=['POST'])
 def page3():
+    """Validate and publish details about an event on Gikopoi."""
     fields = ["title", "host", "loc", "dst",
               "year", "month", "day", "hour", "tz"]
     # dst removed
@@ -99,11 +104,13 @@ def page3():
     return u.html(page, "Event published!")
 
 def mkfilename(ymd):
+    """Given year, month, day input, create a filename for an event."""
     files = os.listdir("data")
     cnt = len([i for i in files if ymd in i])
     return ".".join([ymd, str(cnt).zfill(2)])
 
 def writedb(event, debug=0):
+    """Update the list.txt with details about a new event."""
     # row 1: title
     # row 2: host, guest1, guest2
     # row 3: giko location name
