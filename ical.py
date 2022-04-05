@@ -9,7 +9,7 @@ ical = Blueprint("ical", __name__)
 def show_ics(fn):
     with open(f"./data/{fn}", "r") as data:
         data = data.read().splitlines()
-    with open("ics.txt", "r") as temp:
+    with open("templates/ics.txt", "r") as temp:
         temp = temp.read()
     chars = {"<br>": "\\n", ",": "\,",
              "&lt;":"<", "&gt;": ">",

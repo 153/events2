@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title>Gikopoi events</title>
+<id>{0}</id>
+<link rel="self" href="{0}atom" />
+<updated>{1}</updated>

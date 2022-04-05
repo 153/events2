@@ -13,6 +13,6 @@ Web:
 
 Non-web:
   atom feeds
-  grab "x many future events" file
-  grab "x events this month" file
+  grab "x many future events"
+  grab "x events this month"
   bots? (irc)
