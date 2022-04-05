@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import settings as s
 import utils as u
     
@@ -45,4 +45,32 @@ def ld():
         entries[n] = e
     return entries
 
-print(feed())
+def today():
+    return None
+
+def alarm():
+    """List all events, beginning with the next [window of time] and
+working backwards. Set the upcoming events period in global settings"""
+    now = datetime.now()
+    entries = ld()
+    seconds = 60*60*4
+    for e in entries:
+        until = e[1] - now
+        until = int(until.total_seconds())
+        if (0 < until < seconds):
+            print("\t!! event happening in the next 4 hours")
+            print("\n".join([str(x) for x in e]))
+        elif (0 > until):
+            print("\t!! event already happened")
+        else:
+            print("\t!! event happening in more than 4 hours")
+            print(e[1] - now, "\n", e)
+#    entries = [int(e[0][:-9]) for e in ld()]
+#    for e in entries:
+#        print(e, now, e - now)
+    return None
+
+# 20220405, 20220223
+
+alarm()
+#print(feed())
