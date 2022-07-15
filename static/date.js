@@ -1,11 +1,12 @@
 window.onload =  function mydate() {
     var date = new Date();
     var tz = (date.getTimezoneOffset() / 60);
+    console.log(tz);
     if (tz > 0) {
 	tz = "-" + tz.toString().padStart(2, '0');
 
     } else {
-	tz = "+" + tz.toString().padStart(2, '0');
+	tz = "+" + (tz * -1).toString().padStart(2, '0');
     }
     tz += "00"
     // Get the event date in UTC..
