@@ -1,5 +1,5 @@
-from flask import Blueprint
 from datetime import datetime, timedelta
+from flask import Blueprint
 import settings as s
 import utils as u
 
@@ -30,8 +30,11 @@ Input: filename, guests, title, location, description
 Template takes URL, datetime, title, link
 """
     e = []
-    desc = f"Event at <a href='{s._url}{event[4]}'>" \
-        + f"{loc[event[4]]}</a><br>" + event[5]
+    dt = event[1].strftime("%Y-%m-%d, %H:%M UTC")
+    print(event)
+    desc = f"{dt}<br>Event at <a href='{s._url}{event[4]}'>" \
+        + f"{loc[event[4]]}</a><br><br>" + event[5] \
+        + f"<br><br><a href='{s.self_url}e/{event[0]}.ics'>Calendar file</a>"
     desc = desc.replace("&", "&amp;")
     e.append(s.self_url + "e/" + event[0])
     e.append(event[1].strftime("%Y-%m-%dT%H:%M:%SZ"))
@@ -41,7 +44,6 @@ Template takes URL, datetime, title, link
              .replace("&", "&amp;")\
              .replace(">", "&gt;")\
              .replace("<", "&lt;"))
-             
     return atom_entry.format(*e)
 
 def ld():
@@ -60,7 +62,7 @@ def today():
 def alarm():
     """List all events, beginning with the next [window of time] and
 working backwards. Set the upcoming events period in global settings"""
-    seconds = 60*60*4 
+    seconds = 60*60*4
     now = datetime.now()
     entries = ld()
     for e in entries:
