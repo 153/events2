@@ -52,7 +52,6 @@ def event_index():
     etable = ["<table><tr><th>date<th>title<th>guests"]
     etable.append("<tr><td colspan='3'><center><a href='/create/'>Create new!</a></center>")    
     for e in entries:
-        print(e)
         etable.append("".join(["<tr><td>", "<td>".join([e[-1], e[2], e[1]])]))
     etable.append("</table>")
     return u.html("".join(etable), "Event list")

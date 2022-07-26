@@ -1,7 +1,10 @@
+from flask import Blueprint
 from datetime import datetime, timedelta
 import settings as s
 import utils as u
-    
+
+atom = Blueprint("atom", __name__)
+
 with open("templates/atom_entry.txt", "r") as atom_entry:
     atom_entry = atom_entry.read()
 with open("templates/atom_feed.txt", "r") as atom_feed:
@@ -10,6 +13,7 @@ with open("locations.txt") as loc:
     loc = [L.split(" ") for L in loc.read().splitlines()]
 loc = {L[0]: " ".join(L[1:]) for L in loc}
 
+@atom.route("/feed.atom")
 def feed():
     entries = ld()
     updated = entries[-1][1].strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -26,13 +30,18 @@ Input: filename, guests, title, location, description
 Template takes URL, datetime, title, link
 """
     e = []
-    desc = u.escape(f"Event at <a href='{s._url}{event[4]}'>" \
-                    + f"{loc[event[4]]}</a><br>") + event[5]
+    desc = f"Event at <a href='{s._url}{event[4]}'>" \
+        + f"{loc[event[4]]}</a><br>" + event[5]
     desc = desc.replace("&", "&amp;")
     e.append(s.self_url + "e/" + event[0])
     e.append(event[1].strftime("%Y-%m-%dT%H:%M:%SZ"))
     e.append(event[3])
-    e.append(desc)
+    e.append(desc\
+             .replace("&amp;apos;", "'")\
+             .replace("&", "&amp;")\
+             .replace(">", "&gt;")\
+             .replace("<", "&lt;"))
+             
     return atom_entry.format(*e)
 
 def ld():
@@ -51,9 +60,9 @@ def today():
 def alarm():
     """List all events, beginning with the next [window of time] and
 working backwards. Set the upcoming events period in global settings"""
+    seconds = 60*60*4 
     now = datetime.now()
     entries = ld()
-    seconds = 60*60*4
     for e in entries:
         until = e[1] - now
         until = int(until.total_seconds())
@@ -73,4 +82,4 @@ working backwards. Set the upcoming events period in global settings"""
 # 20220405, 20220223
 
 alarm()
-#print(feed())
+print(feed())

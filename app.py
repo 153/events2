@@ -4,6 +4,7 @@ from index import index
 from create import create
 from event import event
 from ical import ical
+from atom import atom
 import settings as s
 import utils as u
 
@@ -20,6 +21,7 @@ app.register_blueprint(index)
 app.register_blueprint(create)
 app.register_blueprint(event)
 app.register_blueprint(ical)
+app.register_blueprint(atom)
 
 @app.route("/")
 def hello():

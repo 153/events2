@@ -53,7 +53,6 @@ def offset(ymdh, tz, dst=0):
 def logger(event, ip, fn, content):
     now = str(int(time.time()))
     entry = " ".join([now, event, ip, fn, content])
-    print(entry)
     with open("log.txt", "a") as log:
         log.write(entry + "\n")
     
