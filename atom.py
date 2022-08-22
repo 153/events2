@@ -83,5 +83,3 @@ working backwards. Set the upcoming events period in global settings"""
 
 # 20220405, 20220223
 
-alarm()
-print(feed())
