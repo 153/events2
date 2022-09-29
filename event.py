@@ -69,7 +69,7 @@ def rsvp(fn):
     entries = [e.split(">") for e in entries]
     for n, e in enumerate(entries):
         if e[0] == fn:            
-            entries[n] = [e[0], str(int(e[1]) + 1), e[2]]
+            entries[n] = [e[0], str(int(e[1]) + 1), *e[2:]]
     entries = "\n".join([">".join(e) for e in entries])
     with open("data/list.txt", "w") as index:
         index.write(entries + "\n")
