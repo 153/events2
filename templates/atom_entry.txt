@@ -1,7 +1,7 @@
 <entry>
   <id>{0}</id>
   <link href="{0}" />
-  <link rel="alternate" type="text/calendar" href="{0}.ical" />
+  <link rel="alternate" type="text/calendar" href="{0}.ics" />
   <published>{1}</published>
   <updated>{1}</updated>
   <title>{2}</title>  
