@@ -2,7 +2,7 @@ debug = 0
 self_url = "https://events.gikopoi.com/"
 _port = 3656
 
-_url = "https://gikopoipoi.net/?areaid=for&roomid="
+_url = "https://play.gikopoi.com/?areaid=for&roomid="
 room = "admin_bar"
 
 ics_prefix = "giko"

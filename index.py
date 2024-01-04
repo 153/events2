@@ -66,14 +66,17 @@ def cal(mont=2):
     # Find the number of weeks in a month
     d1 = date(year, mont, 1)
     d2 = date(year, mont, last)
-    weeks = (d2-d1).days//7
+    startweek = d1.isocalendar()[1]
+    endweek = d2.isocalendar()[1]
+    weeks = endweek-startweek
     
     # Get the first and last days of the month's days of the week.
-    start = pd.Timestamp(f'2022-{monts}-01').dayofweek
-    end = pd.Timestamp(f'2022-{monts}-' + \
-                      str(calendar.monthrange(2022, mont)[1])).dayofweek
+    start = pd.Timestamp(f'{year}-{monts}-01').dayofweek
+    end = pd.Timestamp(f'{year}-{monts}-' + \
+                      str(calendar.monthrange(year, mont)[1])).dayofweek
     
     extra = 6 - end
+
     if (end == 0) or (start == 6):
         weeks += 1
     pos = [0,0]
@@ -82,7 +85,7 @@ def cal(mont=2):
     if mont > 1:
         prev = mont - 1
     if mont < 12:
-        nex = (mont + 1) % 13
+        nex = mont + 1
     
     mon = ["<table>"]
     mon.append(f"<tr><th><a href='/calendar/{prev}'>&#171; {prev}</a>")
