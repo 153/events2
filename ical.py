@@ -6,6 +6,12 @@ import settings as s
 ical = Blueprint("ical", __name__)
 
 @ical.route("/e/<fn>.ics")
+def try_ics(fn):
+    try:
+        return show_ics(fn)
+    except:
+        return False
+    
 def show_ics(fn):
     with open(f"./data/{fn}", "r") as data:
         data = data.read().splitlines()

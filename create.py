@@ -7,8 +7,6 @@ import utils as u
 
 create = Blueprint("create", __name__)
 
-dt = datetime.today()
-
 # locations.txt -> locations [[code, name]]
 with open("locations.txt", "r") as locations:
     locations = locations.read().splitlines()
@@ -41,6 +39,7 @@ def locmenu():
 def page1():
     """Get information about an event on Gikopoi"""
     forms = {"month": "", "day": ""}
+    dt = datetime.today()
     for f in forms:
         with open(f"html/{f}.html", "r") as template:
             forms[f] = template.read()
