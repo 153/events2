@@ -25,6 +25,11 @@ def view_event(fn):
         + f"<br> &emsp;{ymd} @ {hour}:00<br>" \
         + "<span onload='mydate' id='utc'>" \
         + f"{ymd.replace('/', '-')}T{hour}:00:00Z</span>")
+    beats = int(hour) + 1 % 23
+    beats = (3600 * beats) / 86.4
+    event[2] += "<br>&#128760; Internet time "
+    event[2] += "<a href='//gwil.co/internet-time/'>(details)</a>"
+    event[2] += "<br>&emsp;@{:.2f}".format(beats)
     event[3] = f"<a href='{s._url}{event[3]}'>{places[event[3]]}</a>"
     event[4] = event[4].replace("&lt;br&gt;", "<br>")
     comments = []
