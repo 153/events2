@@ -60,17 +60,19 @@ def page1():
 def page2():
     """Confirm details about an event on Gikopoi"""
     fields = ["title", "host", "loc", "desc",
-              "year", "month", "day", "hour", "tz"]
+              "year", "month", "day", "hour", "mins", "tz"]
     # dst may also be in fields
     event = {i: request.form[i] for i in fields}
     if not "dst" in request.form:
         event["dst"] = "0"
     else:
         event["dst"] = "1"
+    if event["mins"] not in ["00", "15", "30", "45"]:
+        event["mins"] = "00"
     if not event["host"]:
         event["host"] = "Anonymous"
     event["ymd"] = "".join([event[i] for i
-                            in ["year", "month", "day", "hour"]])
+                            in ["year", "month", "day", "hour", "mins"]])
     event["utc"] = u.offset(event["ymd"], event["tz"], event["dst"])
     event["fn"] = mkfilename(event["utc"]) + ".txt"
     with open("html/create2.html", "r") as page:
@@ -88,14 +90,21 @@ def page2():
 def page3():
     """Validate and publish details about an event on Gikopoi."""
     fields = ["title", "host", "loc", "dst",
-              "year", "month", "day", "hour", "tz"]
-    # dst removed
+              "year", "month", "day", "hour", "mins", "tz"]
+    # dst removed        
     event = {i: u.escape(request.form[i]) for i in fields}
+    if event["mins"] not in ["00", "15", "30", "45"]:
+        event["mins"] = "00"
+    try:
+        if (int(event["hour"]) > 24) or (int(event["hour"]) < 0):
+            event["hour"] = "00"
+    except:
+        event["hour"] = "00"    
     event["desc"] = request.form["desc"]
     if not date_check(event["year"], event["month"], event["day"]):
         return u.html("Invalid date.", "Error")
-    event["desc"] = u.escape(event["desc"], 800, 1)
-    event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour"]])
+    event["desc"] = u.escape(event["desc"], 3000, 1)
+    event["ymd"] = "".join([event[i] for i in ["year", "month", "day", "hour", "mins"]])
     event["utc"] = u.offset(event["ymd"], event["tz"], event["dst"])    
     event["fn"] = mkfilename(event["utc"]) + ".txt"    
     writedb(event, s.debug)

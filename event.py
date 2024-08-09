@@ -18,15 +18,16 @@ def view_event(fn):
         # title, host, timezone, location, description
     ymd = "/".join([fn[:4], fn[4:6], fn[6:8]])
     hour = fn[8:10]
+    mins = fn[10:12]
     places = u.locations()
     event[1] = event[1].split(">")
     event[1] = f"<b>{len(event[1])} guests</b>: {', '.join(event[1])}"
     event.insert(2, "&#127760; UTC (Universal time): " \
-        + f"<br> &emsp;{ymd} @ {hour}:00<br>" \
+        + f"<br> &emsp;{ymd} @ {hour}:{mins}<br>" \
         + "<span onload='mydate' id='utc'>" \
-        + f"{ymd.replace('/', '-')}T{hour}:00:00Z</span>")
+        + f"{ymd.replace('/', '-')}T{hour}:{mins}:00Z</span>")
     beats = int(hour) + 1 % 23
-    beats = (3600 * beats) / 86.4
+    beats = ((3600 * beats) + (60 * int(mins))) / 86.4
     event[2] += "<br>&#128760; Internet time "
     event[2] += "<a href='//gwil.co/internet-time/'>(details)</a>"
     event[2] += "<br>&emsp;@{:.2f}".format(beats)

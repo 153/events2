@@ -38,7 +38,7 @@ def escape(text, maxlen=0, newlines=0):
     return text
 
 def offset(ymdh, tz, dst=0):
-    dformat = "%Y%m%d%H"
+    dformat = "%Y%m%d%H%M"
     event_dt = datetime.strptime(ymdh, dformat)
     tz = tz[:3]
     if tz[0] not in ["+", "-"]:
@@ -47,7 +47,7 @@ def offset(ymdh, tz, dst=0):
     tz = int(tz)
     tz += int(dst)
     adjust = event_dt - timedelta(hours=int(tz))
-    adjust = adjust.strftime("%Y%m%d%H")
+    adjust = adjust.strftime("%Y%m%d%H%M")
     return adjust
 
 def logger(event, ip, fn, content):
